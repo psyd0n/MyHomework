@@ -6,13 +6,19 @@ import (
 	"fmt"
 )
 
+type Storage interface {
+	Put(*student.Student) (int, error)
+	Get(string) (*student.Student, error)
+	GetStudents() map[string]*student.Student
+}
+
 type University struct {
 	StudentBy map[string]*student.Student
 }
 
-func NewUniversity(StudentBy map[string]*student.Student) *University {
+func NewUniversity() *University {
 	return &University{
-		StudentBy: StudentBy,
+		StudentBy: make(map[string]*student.Student),
 	}
 }
 
@@ -35,4 +41,8 @@ func (u University) Get(name string) (*student.Student, error) {
 	} else {
 		return value, nil
 	}
+}
+
+func (u *University) GetStudents() map[string]*student.Student {
+	return u.StudentBy
 }
